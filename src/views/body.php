@@ -1,34 +1,50 @@
-<main class="px-4 py-5 my-5 text-center container flex-fill">
+<div class="container my-5">
+    <a href="/crud/register.php" type="button" class="btn btn-primary">
+        Register
+    </a>
+</div>
+
+<main class="px-4 text-center container flex-fill">
     <div class="table-responsive">
         <table class="table table-bordered border-black">
             <caption>List of users</caption>
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col" colspan="2">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>@social</td>
-                </tr>
+                <?php foreach ($users as $user) { ?>
+                    <tr>
+                        <th scope="row"><?= htmlspecialchars($user['id']); ?></th>
+                        <td><?= htmlspecialchars($user['name']); ?></td>
+                        <td><?= htmlspecialchars($user['username']); ?></td>
+                        <td><?= htmlspecialchars($user['email']); ?></td>
+                        <form action="/crud/index.php" method="POST">
+                            <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
+                            <input type="hidden" name="action" value="trackUser">
+                            <td>
+                                <button type="submit" class="btn">
+                                    <i class="bi bi-pencil-square text-primary fs-4"></i>
+                                </button>
+                            </td>
+                        </form>
+                        <form action="/crud/index.php" method="POST">
+                            <input type="hidden" name="id" value="<?= htmlspecialchars($user['id']) ?>">
+                            <input type="hidden" name="action" value="delete">
+                            <td>
+                                <button type="submit" class="btn">
+                                    <i class="bi bi-trash text-danger fs-4"></i>
+                                </button>
+                            </td>
+                        </form>
+
+                    </tr>
+                <?php } ?>
             </tbody>
         </table>
     </div>

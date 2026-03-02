@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . "../../../config/db.php";
+require_once __DIR__ . "/../../config/db.php";
 
 class UserRepository
 {
@@ -22,5 +22,55 @@ class UserRepository
             ":password" => $password,
             ":email" => $email
         ]);
+    }
+
+    public function ReadUserRepository()
+    {
+        $sql = "SELECT * FROM users";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function UpdateUserRepository($name, $username, $email, $id)
+    {
+        $sql = "UPDATE users SET name = :name, username = :username, email = :email WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ":name" => $name,
+            ":username" => $username,
+            ":email" => $email,
+            ":id" => $id
+        ]);
+    }
+
+    public function DeleteUserRepository($id)
+    {
+        $sql = "DELETE FROM users WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([":id" => $id]);
+    }
+
+    public function SearchUserRepository($search)
+    {
+        $sql = "SELECT * FROM users WHERE name LIKE :search OR username LIKE :search OR email LIKE :search";
+        $stmt = $this->pdo->prepare($sql);
+
+        $search = "%" . $search . "%";
+
+        $stmt->execute([":search" => $search]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function TrackUserRepository($id)
+    {
+        $sql = "SELECT * FROM users WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([":id" => $id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
